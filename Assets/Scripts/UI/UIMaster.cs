@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class UIMaster : MonoBehaviour {
 
-	public UnitScript selected;
+	public EntityScript selected;
 
 	UISelectedInfo selectedUi;
 
@@ -44,7 +44,7 @@ public class UIMaster : MonoBehaviour {
 		RaycastHit hitInfo;
 
 		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo, Mathf.Infinity)) {
-			UnitScript us = hitInfo.collider.gameObject.GetComponent<UnitScript> ();
+			EntityScript us = hitInfo.collider.gameObject.GetComponent<EntityScript> ();
 			if (us != null) {
 				selected = us;
 				us.setSelected (true);

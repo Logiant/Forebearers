@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public class UnitScript : MonoBehaviour {
+public class EntityScript : MonoBehaviour {
 
 	public string unitName;
 
@@ -18,11 +18,7 @@ public class UnitScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (selected) {
-			transform.Rotate (new Vector3 (0, 30 * Time.deltaTime, 0));
-		} else {
-			transform.rotation = new Quaternion ();
-		}
+
 	}
 
 	public void rightClick(RaycastHit hitInfo) { //called on right click by UIMaster
@@ -36,18 +32,18 @@ public class UnitScript : MonoBehaviour {
 
 
 			//}
-		}/* else if (go.CompareTag ("Building")) { //enter some building
+		}/* else if (go.GetComponent<EntityScript> != null) { //interact with some entity
 		
-
-		} else if (go.CompareTag("Unit")) { //interact with some unit (enemy, merchant, friend, equipment, etc)
-			
-			
-		} */
+*/
 	}
 
 	public void setSelected(bool selected) {
 		this.selected = selected;
-
+		if (selected) {
+			this.GetComponent<MeshRenderer> ().material.color = (Color.green);
+		} else {
+			this.GetComponent<MeshRenderer> ().material.color = (Color.white);
+		}
 	}
 		
 }

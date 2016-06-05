@@ -6,10 +6,13 @@ public class Movable : MonoBehaviour {
 
 	float speed = 2.1f; // m/s
 	Vector3 targetPosition;
+	NavMeshAgent nav;
 
 	// Use this for initialization
 	void Start () {
 		targetPosition = transform.position;
+		nav = GetComponent<NavMeshAgent> ();
+		nav.destination = targetPosition;
 	}
 	
 	// Update is called once per frame
@@ -18,14 +21,17 @@ public class Movable : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		Vector3 distance = (targetPosition - transform.position);
+		if (nav == null) {
 
-		float dt = Time.fixedDeltaTime;
+			Vector3 distance = (targetPosition - transform.position);
 
-		if (distance.magnitude < speed * dt) {
-			transform.position = targetPosition;
-		} else {
-			transform.position = transform.position + distance.normalized * speed * dt;
+			float dt = Time.fixedDeltaTime;
+
+			if (distance.magnitude < speed * dt) {
+				transform.position = targetPosition;
+			} else {
+				transform.position = transform.position + distance.normalized * speed * dt;
+			}
 		}
 
 	}
@@ -33,6 +39,10 @@ public class Movable : MonoBehaviour {
 
 	public void setTarget(Vector3 target) {
 		targetPosition = target + new Vector3(0, 0.5f, 0); //don't sink into the ground
+		if (nav != null) {
+			nav.destination = targetPosition;
+		}
+
 	}
 
 	public void stop() {
