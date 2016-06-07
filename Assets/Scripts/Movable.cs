@@ -8,11 +8,14 @@ public class Movable : MonoBehaviour {
 	Vector3 targetPosition;
 	NavMeshAgent nav;
 
+	float verticalOffset = 0.5f;
+
 	// Use this for initialization
 	void Start () {
 		targetPosition = transform.position;
 		nav = GetComponent<NavMeshAgent> ();
 		nav.destination = targetPosition;
+		verticalOffset = GetComponent<Collider> ().bounds.extents.y / 2f;
 	}
 	
 	// Update is called once per frame
@@ -22,7 +25,7 @@ public class Movable : MonoBehaviour {
 
 	void FixedUpdate() {
 		if (nav == null) {
-
+			Debug.Log ("No NavMeshAgent Detected!");
 			Vector3 distance = (targetPosition - transform.position);
 
 			float dt = Time.fixedDeltaTime;
@@ -33,12 +36,11 @@ public class Movable : MonoBehaviour {
 				transform.position = transform.position + distance.normalized * speed * dt;
 			}
 		}
-
 	}
 
 
 	public void setTarget(Vector3 target) {
-		targetPosition = target + new Vector3(0, 0.5f, 0); //don't sink into the ground
+		targetPosition = target + new Vector3(0, verticalOffset, 0); //don't sink into the ground
 		if (nav != null) {
 			nav.destination = targetPosition;
 		}
@@ -46,6 +48,8 @@ public class Movable : MonoBehaviour {
 	}
 
 	public void stop() {
-		setTarget (transform.position);
+		if (nav != null) {
+			nav.destination = transform.position;
+		}
 	}
 }

@@ -28,7 +28,7 @@ public class UIMaster : MonoBehaviour {
 		string name = "None";
 
 		if (selected != null) {
-			name = selected.unitName;
+			name = selected.getName(1);
 		}
 
 		selectedUi.SetUnitName (name);

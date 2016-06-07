@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
 public class EntityScript : MonoBehaviour {
 
 	public string unitName;
+
+	public int owner = PLAYERS.PLAYER_1;
 
 	bool selected;
 
@@ -22,16 +23,26 @@ public class EntityScript : MonoBehaviour {
 	}
 
 	public void rightClick(RaycastHit hitInfo) { //called on right click by UIMaster
+		if (owner != PLAYERS.PLAYER_1) {
+			return;
+		}
 		GameObject go = hitInfo.collider.gameObject;
 
 		if (go.CompareTag ("Terrain")) { //go to some point, set rally point
+			moveTo (hitInfo.point);
+		} else {
+			//move toward the target
+			Ray r = new Ray(transform.position, hitInfo.point - transform.position);
+			RaycastHit info;
+			if (hitInfo.collider.Raycast(r, out info, Mathf.Infinity)) {
+				
+				Vector3 newPos = hitInfo.point + info.normal*0.5f;
+				newPos.y = Terrain.activeTerrain.SampleHeight (newPos);
+				moveTo (newPos);
 
-			if (movable != null) {
-				movable.setTarget (hitInfo.point);
-			} //else if (Rally != null) {
+			} //else - you clicked yourself
 
 
-			//}
 		}/* else if (go.GetComponent<EntityScript> != null) { //interact with some entity
 		
 */
@@ -46,4 +57,19 @@ public class EntityScript : MonoBehaviour {
 		}
 	}
 		
+
+	void moveTo(Vector3 position) {
+		if (movable != null) {
+			movable.setTarget (position);
+		}
+	}
+
+	public string getName(int player) {
+		if (player == owner) {
+			return unitName;
+		} else {
+			return "Player " + owner + "'s unit";
+		}
+	}
+
 }
