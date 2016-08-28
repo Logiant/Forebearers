@@ -17,6 +17,7 @@ public class UISelectedInfo : MonoBehaviour {
 	}
 
 	public void SetUnitName(string name) {
-		unitName.text = "Selected: " + name;
+		unitName.text = name;
 	}
+		
 }
